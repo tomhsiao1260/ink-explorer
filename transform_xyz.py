@@ -40,6 +40,8 @@ def main():
             "output_zarr_ome_dir", 
             help="Name of directory that will contain OME/zarr datastore")
 
+    args = parser.parse_args()
+
     zarrdir = Path(args.output_zarr_ome_dir)
     if zarrdir.suffix != ".zarr":
         print("Name of ouput zarr directory must end with '.zarr'")

@@ -1,35 +1,43 @@
 import os
+import sys
 import zarr
 import argparse
 import numpy as np
 import tifffile
 import shutil
+from pathlib import Path
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-        "output_zarr_ome_dir", 
-        help="Name of directory that will contain OME/zarr datastore")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            "output_zarr_ome_dir", 
+            help="Name of directory that will contain OME/zarr datastore")
 
-zarrdir = Path(args.output_zarr_ome_dir)
-if zarrdir.suffix != ".zarr":
-    print("Name of ouput zarr directory must end with '.zarr'")
-    return 1
+    args = parser.parse_args()
 
-zdir = args.output_zarr_ome_dir
+    zarrdir = Path(args.output_zarr_ome_dir)
+    if zarrdir.suffix != ".zarr":
+        print("Name of ouput zarr directory must end with '.zarr'")
+        return 1
 
-# data = zarr.open('../scroll2zarr-learn-forward/scroll.zarr/0/', mode="r")
-data = zarr.open(f'{zdir}/0/', mode="r")
-data = np.array(data)
+    zdir = args.output_zarr_ome_dir
 
-if os.path.exists('stack'):
-    shutil.rmtree('stack')
+    # data = zarr.open('../scroll2zarr-learn-forward/scroll.zarr/0/', mode="r")
+    data = zarr.open(f'{zdir}/0/', mode="r")
+    data = np.array(data)
 
-os.makedirs('stack', exist_ok=True)
+    if os.path.exists('stack'):
+        shutil.rmtree('stack')
 
-print(data.shape)
-print(np.min(data))
-print(np.max(data))
+    os.makedirs('stack', exist_ok=True)
 
-for i in range(data.shape[0]):
-    filename = os.path.join('stack', f'{i:03d}.tif')
-    tifffile.imwrite(filename, data[i])
+    print(data.shape)
+    print(np.min(data))
+    print(np.max(data))
+
+    for i in range(data.shape[0]):
+        filename = os.path.join('stack', f'{i:03d}.tif')
+        tifffile.imwrite(filename, data[i])
+
+if __name__ == '__main__':
+    sys.exit(main())

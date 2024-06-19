@@ -20,6 +20,6 @@ python transform_xyz.py <YOUR_ZARR_NAME>.zarr
 
 Transform Zarr to Tiff.
 
-``python
+```python
 python zarr_to_tif.py <YOUR_ZARR_NAME>.zarr
 ``
