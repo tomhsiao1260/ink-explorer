@@ -4,26 +4,26 @@ FOLDER="pi.zarr"
 USERNAME=""
 PASSWORD=""
 
-# # title
-# XMIN=3085
-# XMAX=4473
+# title
+XMIN=3085
+XMAX=4473
 
-# YMIN=1926
-# YMAX=3295
+YMIN=1926
+YMAX=3295
 
-# # 1:20 ~ 3:00
-# ZMIN=2395
-# ZMAX=5403
+# 1:20 ~ 3:00
+ZMIN=2395
+ZMAX=5403
 
-# pi
-XMIN=2471
-XMAX=3103
+# # pi
+# XMIN=2471
+# XMAX=3103
 
-YMIN=2549
-YMAX=2965
+# YMIN=2549
+# YMAX=2965
 
-ZMIN=10585
-ZMAX=11200
+# ZMIN=10585
+# ZMAX=11200
 
 ################################################
 #############        .zarray       #############

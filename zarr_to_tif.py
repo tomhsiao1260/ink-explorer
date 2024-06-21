@@ -26,8 +26,7 @@ def main():
     data = zarr.open(f'{zdir}/0/', mode="r")
     data = np.array(data)
 
-    if os.path.exists('stack'):
-        shutil.rmtree('stack')
+    if os.path.exists('stack'): shutil.rmtree('stack')
 
     os.makedirs('stack', exist_ok=True)
 
