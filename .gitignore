@@ -2,6 +2,9 @@
 /__pycache__
 
 /env
-/stack
 /*.zarr
 /*.tif
+/*.nrrd
+
+*/
+*/*

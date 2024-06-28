@@ -12,6 +12,9 @@ def main():
     parser.add_argument(
             "output_zarr_ome_dir", 
             help="Name of directory that will contain OME/zarr datastore")
+    parser.add_argument(
+            "output_stack", 
+            help="Name of directory that will contain output stack")
 
     args = parser.parse_args()
 
@@ -26,16 +29,17 @@ def main():
     data = zarr.open(f'{zdir}/0/', mode="r")
     data = np.array(data)
 
-    if os.path.exists('stack'): shutil.rmtree('stack')
+    output = args.output_stack
+    if os.path.exists(output): shutil.rmtree(output)
 
-    os.makedirs('stack', exist_ok=True)
+    os.makedirs(output, exist_ok=True)
 
     print(data.shape)
     print(np.min(data))
     print(np.max(data))
 
     for i in range(data.shape[0]):
-        filename = os.path.join('stack', f'{i:03d}.tif')
+        filename = os.path.join(output, f'{i:03d}.tif')
         tifffile.imwrite(filename, data[i])
 
 if __name__ == '__main__':

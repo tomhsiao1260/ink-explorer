@@ -4,10 +4,16 @@ import tifffile
 import numpy as np
 from requests.auth import HTTPBasicAuth
 
-y, x, z = 5, 8, 8
+# y, x, z = 5, 7, 8 # done
+y, x, z = 5, 8, 8 # done
+# y, x, z = 5, 9, 8 # done
 
-username = ""
-password = ""
+# y, x, z = 5, 7, 9 # done
+# y, x, z = 5, 8, 9 # done
+# y, x, z = 5, 9, 9 # done
+
+username = "registeredusers"
+password = "only"
 
 output_folder = "cell"
 output_stack_folder = "cell_stack"
@@ -20,14 +26,16 @@ def create_stack():
 
     w = 1536
     h = 1536
+    d = 3328
 
-    xs = (x - 1) * 500 - shX
-    ys = (y - 1) * 500 - shY
-    zs = (z - 1) * 500 - shZ
-
-    xe = xs + 500
-    ye = ys + 500
-    ze = zs + 500
+    # 428, 208, 1196
+    xs = max((x - 1) * 500 - shX, 0)
+    ys = max((y - 1) * 500 - shY, 0)
+    zs = max((z - 1) * 500 - shZ, 0)
+    # 927, 707, 1695
+    xe = min(xs + 500, w)
+    ye = min(ys + 500, h)
+    ze = min(zs + 500, d)
 
     os.makedirs(output_stack_folder, exist_ok=True)
 
@@ -37,10 +45,14 @@ def create_stack():
     data = data.astype('uint8')
 
     for l in range(zs, ze, 1):
-        img = np.zeros((h, w), dtype=np.uint8)
-        img[ys:ye, xs:xe] = data[(l-zs), :500, :500]
-
         filename = os.path.join(output_stack_folder, f'{l:04d}.tif')
+
+        if (os.path.exists(filename)):
+            img = tifffile.imread(filename)
+        else:
+            img = np.zeros((h, w), dtype=np.uint8)
+
+        img[ys:ye, xs:xe] = data[(l-zs), :500, :500]
         tifffile.imwrite(filename, img)
 
 def download_image(url, filename):

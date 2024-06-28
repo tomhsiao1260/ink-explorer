@@ -1,3 +1,4 @@
 zarr
+pynrrd
 tifffile
 scikit-image
