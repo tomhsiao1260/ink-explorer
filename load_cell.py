@@ -3,6 +3,7 @@ import requests
 import tifffile
 import numpy as np
 from requests.auth import HTTPBasicAuth
+from config import username, password
 
 # y, x, z = 5, 7, 8 # done
 y, x, z = 5, 8, 8 # done
@@ -11,9 +12,6 @@ y, x, z = 5, 8, 8 # done
 # y, x, z = 5, 7, 9 # done
 # y, x, z = 5, 8, 9 # done
 # y, x, z = 5, 9, 9 # done
-
-username = "registeredusers"
-password = "only"
 
 output_folder = "cell"
 output_stack_folder = "cell_stack"

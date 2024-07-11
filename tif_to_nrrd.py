@@ -8,9 +8,9 @@ output_folder = 'pi_nrrd'
 filename = 'pi.nrrd'
 
 def create_nrrd():
-    w = 256
-    h = 256
-    d = 256
+    d = 768
+    h = 768
+    w = 768
 
     os.makedirs(output_folder, exist_ok=True)
 
@@ -19,7 +19,8 @@ def create_nrrd():
 
     for i in range(d):
         data = tifffile.imread(os.path.join(input_folder, f'{i:03d}.tif'))
-        data_nrrd[i] = data[:h, :w]
+        data_nrrd[i, :, :] = data[:h, 99:99+w]
+        # data_nrrd[i, :, :] = data[:h, :w]
 
     # x, y, z
     nrrd.write(os.path.join(output_folder, filename), data_nrrd.transpose(2, 1, 0))

@@ -9,8 +9,8 @@ input_folder = "stack"
 output_folder = "crop_stack"
 
 def create_stack():
-    shX = 3072
     shY = 1792
+    shX = 3072
     shZ = 2304
 
     w = 1536
@@ -37,10 +37,16 @@ def create_stack():
     for l in range(zs, ze, 1):
         filename = os.path.join(input_folder, f'{l:04d}.tif')
         data = tifffile.imread(filename)
-        img = np.zeros((h, w), dtype=np.uint8)
-        img[ys:ye, xs:xe] = data[ys:ye, xs:xe]
+        # img = np.zeros((h, w), dtype=np.uint8)
+        # img[ys:ye, xs:xe] = data[ys:ye, xs:xe]
 
-        filename = os.path.join(output_folder, f'{l:04d}.tif')
+        # filename = os.path.join(output_folder, f'{l:04d}.tif')
+        # tifffile.imwrite(filename, img)
+
+        img = np.zeros((ye - ys, xe - xs), dtype=np.uint8)
+        img = data[ys:ye, xs:xe]
+
+        filename = os.path.join(output_folder, f'{l - zs:04d}.tif')
         tifffile.imwrite(filename, img)
 
 if __name__ == "__main__":

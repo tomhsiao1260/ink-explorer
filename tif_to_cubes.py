@@ -6,18 +6,20 @@ import tifffile
 import numpy as np
 from pathlib import Path
 
-input_folder = 'pi_stack'
-output_folder = 'pi_cubes'
+input_folder = 'crop_stack'
+output_folder = 'title_cubes'
 
-# # title
-# tif_startZ, tif_startY, tif_startX = 2304, 1792, 3072
+# title
+tif_startZ, tif_startY, tif_startX = 2304 + 1196, 1792, 3072
 
-# pi
-tif_startZ, tif_startY, tif_startX = 10496, 2304, 2304
+# # pi
+# tif_startZ, tif_startY, tif_startX = 10496, 2304, 2304
 
-cube_startZ, cube_startY, cube_startX = 2000, 2000, 2000
+cube_startZ, cube_startY, cube_startX = 2304 + 1196, 1792, 3072
+# cube_startZ, cube_startY, cube_startX = 10496 + 128, 2304, 2304
+# cube_startZ, cube_startY, cube_startX = 2000, 2000, 2000
 
-chunk = 256
+chunk = 768
 
 def tif_to_cubes():
     tiffdir = Path(input_folder)
@@ -92,8 +94,8 @@ def tif_to_cubes():
                 z0, y0, x0 = 0, y - startY, x - startX
                 cube = data[ z0:z0+chunk, y0:y0+chunk, x0:x0+chunk ]
 
-                # filename = str(cubedir / f'ink_{z}_{y}_{x}.tif')
-                # tifffile.imwrite(filename, cube)
+                filename = str(cubedir / f'ink_{z}_{y}_{x}.tif')
+                tifffile.imwrite(filename, cube)
                 filename = str(cubedir / f'ink_{z}_{y}_{x}.nrrd')
                 nrrd.write(filename, cube.transpose(2, 1, 0))
 
