@@ -5,6 +5,7 @@
 /*.zarr
 /*.tif
 /*.nrrd
+/*.obj
 
 */
 */*
