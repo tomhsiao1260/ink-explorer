@@ -3,13 +3,23 @@ import numpy as np
 from loader import parse_obj, save_obj
 from cut import cutLayer, cutBounding
 
-# python cut_obj.py 20230702185753 --min 3072 1792 3500 --size 768 768 768
+# python cut_obj.py 20230702185753 --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Generate volume via boudning box')
+    parser = argparse.ArgumentParser(description='Cut segment into multiple chunks')
     parser.add_argument('segment', type=str, help='segment id')
-    parser.add_argument('--min', nargs=3, type=int, metavar=('X', 'Y', 'Z'), help='bounding box minimum (x, y, z)')
-    parser.add_argument('--size', nargs=3, type=int, metavar=('X', 'Y', 'Z'), help='bounding box size (w, h, d)')
+    parser.add_argument('--x', type=int, help='minimium x')
+    parser.add_argument('--y', type=int, help='minimium y')
+    parser.add_argument('--z', type=int, help='minimium z')
+    parser.add_argument('--w', type=int, default=256, help='width')
+    parser.add_argument('--h', type=int, default=256, help='height')
+    parser.add_argument('--d', type=int, default=256, help='depth')
+    parser.add_argument('--chunk', type=int, default=256, help='chunk size')
     args = parser.parse_args()
+
+    segment = args.segment
+    xmin, ymin, zmin = args.x, args.y, args.z
+    w, h, d, nrrd_chunk = args.w, args.h, args.d, args.chunk
 
     segment = args.segment
     boxSize = np.array(args.size)

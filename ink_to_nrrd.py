@@ -12,10 +12,10 @@ from config import username, password
 from requests.auth import HTTPBasicAuth
 
 # PI
-# python ink_to_nrrd.py 2432 2304 10624 --w 768 --h 768 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 2432 --y 2304 --z 10624 --w 768 --h 768 --d 768 --chunk 768
 
 # Title
-# python ink_to_nrrd.py 3072 1792 3500 --w 1428 --h 500 --d 1000 --chunk 768
+# python ink_to_nrrd.py --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
 
 ny, nx, nz, zarr_chunk = 30, 31, 56, 256
 
@@ -137,16 +137,16 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download Ryan ink 3d and transform into a series of NRRD files.')
-    parser.add_argument('xmin', type=int, help='minimium x')
-    parser.add_argument('ymin', type=int, help='minimium y')
-    parser.add_argument('zmin', type=int, help='minimium z')
+    parser.add_argument('--x', type=int, help='minimium x')
+    parser.add_argument('--y', type=int, help='minimium y')
+    parser.add_argument('--z', type=int, help='minimium z')
     parser.add_argument('--w', type=int, default=256, help='width')
     parser.add_argument('--h', type=int, default=256, help='height')
     parser.add_argument('--d', type=int, default=256, help='depth')
     parser.add_argument('--chunk', type=int, default=256, help='chunk size')
     args = parser.parse_args()
 
-    xmin, ymin, zmin = args.xmin, args.ymin, args.zmin
+    xmin, ymin, zmin = args.x, args.y, args.z
     w, h, d, nrrd_chunk = args.w, args.h, args.d, args.chunk
 
     main(xmin, ymin, zmin, w, h, d, nrrd_chunk)
