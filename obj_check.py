@@ -36,12 +36,15 @@ print(mid_max)
 print(top_min)
 print(top_max)
 
-# data = parse_obj('./obj_path/20230702185753.obj')
-# cut_obj(data, splitAxis=2, splitOffset=bot_max[2], survive='right', align=True)
-# re_index(data)
-# cut_obj(data, splitAxis=2, splitOffset=top_min[2], survive='left', align=True)
-# re_index(data)
+data = parse_obj('./obj_path/20230702185753.obj')
+cut_obj(data, splitAxis=2, splitOffset=5049, survive='right', align=True)
+re_index(data)
+cut_obj(data, splitAxis=2, splitOffset=(5049+768), survive='left', align=True)
+re_index(data)
 # save_obj(path_last_full, data)
+
+print(np.min(data['vertices'], axis=0))
+print(np.max(data['vertices'], axis=0))
 
 # # 2920 1849 2396
 # # 2920 1916 3503
