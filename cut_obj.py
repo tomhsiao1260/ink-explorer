@@ -6,6 +6,7 @@ import numpy as np
 from loader import parse_obj, save_obj
 from cut import re_index, cutLayer, cutBounding
 
+# python cut_obj.py 20230702185753 --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
 
 output_folder = "./obj_output/"

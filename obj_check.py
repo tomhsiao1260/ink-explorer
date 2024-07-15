@@ -37,9 +37,9 @@ print(top_min)
 print(top_max)
 
 data = parse_obj('./obj_path/20230702185753.obj')
-cut_obj(data, splitAxis=2, splitOffset=5049, survive='right', align=True)
+cut_obj(data, splitAxis=2, splitOffset=4281, survive='right', align=True)
 re_index(data)
-cut_obj(data, splitAxis=2, splitOffset=(5049+768), survive='left', align=True)
+cut_obj(data, splitAxis=2, splitOffset=(4281+768), survive='left', align=True)
 re_index(data)
 # save_obj(path_last_full, data)
 

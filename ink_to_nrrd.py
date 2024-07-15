@@ -15,9 +15,8 @@ from requests.auth import HTTPBasicAuth
 # python ink_to_nrrd.py --x 2432 --y 2304 --z 10624 --w 768 --h 768 --d 768 --chunk 768
 
 # Title
-# python ink_to_nrrd.py --x 2606 --y 2077 --z 5817 --w 2304 --h 1536 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2611 --y 1764 --z 5049 --w 2304 --h 1536 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2614 --y 1888 --z 4281 --w 2304 --h 768 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 2612 --y 1765 --z 5049 --w 2304 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2656 --y 1860 --z 1968 --w 2304 --h 768 --d 768 --chunk 768
