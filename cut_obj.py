@@ -8,8 +8,9 @@ from cut import re_index, cutLayer, cutBounding
 
 # python cut_obj.py 20230702185753 --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
+# python cut_obj.py 20230702185753 --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
 
-output_folder = "./obj_output/"
+output_folder = "./output_obj/"
 
 def main(segment, xmin, ymin, zmin, w, h, d, chunk):
     if os.path.exists(output_folder): shutil.rmtree(output_folder)
@@ -20,7 +21,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
     boxMax = boxMin + np.array([w, h, d])
 
     # load obj
-    obj_path = f'../full-scrolls/Scroll1.volpkg/paths/{segment}/{segment}.obj'
+    obj_path = f'../full-scrolls/Scroll1/PHercParis4.volpkg/paths/{segment}/{segment}.obj'
     data = parse_obj(obj_path)
 
     # cut a given .obj along z-axis
@@ -35,7 +36,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
         for y in range(boxMin[1], boxMax[1], chunk):
             for z in range(boxMin[2], boxMax[2], chunk):
 
-                print(f"Processing {segment}_{z}_{y}_{x}_d{chunk}.obj ...")
+                print(f"Processing {z}_{y}_{x}_d{chunk}_{segment}.obj ...")
 
                 chunk_boxMin = np.array([x, y, z])
                 chunk_boxMax = chunk_boxMin + np.array([chunk, chunk, chunk])
@@ -44,7 +45,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
                 cutBounding(chunk_data, chunk_boxMin, chunk_boxMax)
                 re_index(chunk_data)
 
-                filename = os.path.join(output_folder, f'{segment}_{z}_{y}_{x}_d{chunk}.obj')
+                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{chunk}_{segment}.obj')
                 save_obj(filename, chunk_data)
 
 if __name__ == "__main__":

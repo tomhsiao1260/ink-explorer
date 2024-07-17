@@ -23,9 +23,9 @@ from requests.auth import HTTPBasicAuth
 
 ny, nx, nz, zarr_chunk = 30, 31, 56, 256
 
-output_folder = "./output/"
+output_folder = "./output_ink/"
 ink_folder = "./output/ink.zarr"
-zarr_folder = "./3d_predictions_scroll1.zarr/"
+zarr_folder = "../full-scrolls/community-uploads/ryan/3d_predictions_scroll1.zarr/"
 url_template = 'https://dl.ash2txt.org/community-uploads/ryan/3d_predictions_scroll1.zarr/'
 
 def download(url, filename):
@@ -115,7 +115,7 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
         for y in range(ys, ye, nrrd_chunk):
             for x in range(xs, xe, nrrd_chunk):
-                print(f"Processing ink_{z}_{y}_{x}_d{nrrd_chunk}.nrrd ...")
+                print(f"Processing {z}_{y}_{x}_d{nrrd_chunk}_ink.nrrd ...")
 
                 dy = min(ye - y, nrrd_chunk)
                 dx = min(xe - x, nrrd_chunk)
@@ -129,12 +129,13 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 cube[ 0:dy, 0:dx, 0:dz ] = zarr_data[ oy:oy+dy, ox:ox+dx, oz:oz+dz ]
 
                 # tiff (z, y, x), nrrd (x, y, z)
-                filename = os.path.join(output_folder, f'ink_{z}_{y}_{x}_d{nrrd_chunk}.tif')
+                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{nrrd_chunk}_ink.tif')
                 tifffile.imwrite(filename, cube.transpose(2, 0, 1))
-                filename = os.path.join(output_folder, f'ink_{z}_{y}_{x}_d{nrrd_chunk}.nrrd')
+                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{nrrd_chunk}_ink.nrrd')
                 nrrd.write(filename, cube.transpose(1, 0, 2))
 
     # generate a mask template
+    print(f"Processing mask_template_d{nrrd_chunk}.nrrd ...")
     filename = os.path.join(output_folder, f'mask_template_d{nrrd_chunk}.nrrd')
     mask = np.zeros((nrrd_chunk, nrrd_chunk, nrrd_chunk), dtype=np.uint8)
     nrrd.write(filename, mask)
