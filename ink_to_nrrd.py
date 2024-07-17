@@ -115,7 +115,7 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
         for y in range(ys, ye, nrrd_chunk):
             for x in range(xs, xe, nrrd_chunk):
-                print(f"Processing {z}_{y}_{x}_d{nrrd_chunk}_ink.nrrd ...")
+                print(f"Processing {z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.nrrd ...")
 
                 dy = min(ye - y, nrrd_chunk)
                 dx = min(xe - x, nrrd_chunk)
@@ -129,9 +129,9 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 cube[ 0:dy, 0:dx, 0:dz ] = zarr_data[ oy:oy+dy, ox:ox+dx, oz:oz+dz ]
 
                 # tiff (z, y, x), nrrd (x, y, z)
-                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{nrrd_chunk}_ink.tif')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.tif')
                 tifffile.imwrite(filename, cube.transpose(2, 0, 1))
-                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{nrrd_chunk}_ink.nrrd')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.nrrd')
                 nrrd.write(filename, cube.transpose(1, 0, 2))
 
     # generate a mask template

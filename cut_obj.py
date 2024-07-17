@@ -6,9 +6,15 @@ import numpy as np
 from loader import parse_obj, save_obj
 from cut import re_index, cutLayer, cutBounding
 
+# PI
+# python cut_obj.py 20230702185753 --x 2432 --y 2304 --z 10624 --w 768 --h 768 --d 768 --chunk 768
+
+# Title
+# python cut_obj.py 20230702185753 --x 2612 --y 1765 --z 5049 --w 2304 --h 1536 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
+# python cut_obj.py 20230702185753 --x 2656 --y 1860 --z 1968 --w 2304 --h 768 --d 768 --chunk 768
 
 output_folder = "./output_obj/"
 
@@ -36,7 +42,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
         for y in range(boxMin[1], boxMax[1], chunk):
             for z in range(boxMin[2], boxMax[2], chunk):
 
-                print(f"Processing {z}_{y}_{x}_d{chunk}_{segment}.obj ...")
+                print(f"Processing {z:05d}_{y:05d}_{x:05d}_d{chunk}_{segment}.obj ...")
 
                 chunk_boxMin = np.array([x, y, z])
                 chunk_boxMax = chunk_boxMin + np.array([chunk, chunk, chunk])
@@ -45,7 +51,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
                 cutBounding(chunk_data, chunk_boxMin, chunk_boxMax)
                 re_index(chunk_data)
 
-                filename = os.path.join(output_folder, f'{z}_{y}_{x}_d{chunk}_{segment}.obj')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{chunk}_{segment}.obj')
                 save_obj(filename, chunk_data)
 
 if __name__ == "__main__":
