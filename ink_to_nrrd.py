@@ -12,19 +12,32 @@ from config import username, password
 from requests.auth import HTTPBasicAuth
 
 # PI
+
 # python ink_to_nrrd.py --x 2432 --y 2304 --z 10624 --w 768 --h 768 --d 768 --chunk 768
 
 # Title
+
+# python ink_to_nrrd.py --x 2860 --y 2853 --z 9657 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 2973 --y 2769 --z 8889 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3140 --y 2700 --z 8121 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3264 --y 2666 --z 7353 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3360 --y 2666 --z 6585 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3360 --y 2373 --z 5817 --w 768 --h 1536 --d 768 --chunk 768
+
 # python ink_to_nrrd.py --x 2612 --y 1765 --z 5049 --w 2304 --h 1536 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 2656 --y 1860 --z 1968 --w 2304 --h 768 --d 768 --chunk 768
 
+# python ink_to_nrrd.py --x 3490 --y 1537 --z 1200 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3674 --y 1722 --z 0 --w 768 --h 1536 --d 768 --chunk 768
+
 ny, nx, nz, zarr_chunk = 30, 31, 56, 256
 
 output_folder = "./output_ink/"
-ink_folder = "./output/ink.zarr"
+ink_folder = "./output_ink/ink.zarr"
 zarr_folder = "../full-scrolls/community-uploads/ryan/3d_predictions_scroll1.zarr/"
 url_template = 'https://dl.ash2txt.org/community-uploads/ryan/3d_predictions_scroll1.zarr/'
 
