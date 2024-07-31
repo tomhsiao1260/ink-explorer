@@ -16,6 +16,9 @@ from cut import re_index, cutLayer, cutBounding
 # python cut_obj.py 20230702185753 --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 2656 --y 1860 --z 1968 --w 2304 --h 768 --d 768 --chunk 768
 
+# python cut_obj.py 20230702185753 --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
+# python cut_obj.py 20230702185753 --x 3674 --y 1722 --z 0 --w 768 --h 1536 --d 768 --chunk 768
+
 output_folder = "./output_obj/"
 
 def main(segment, xmin, ymin, zmin, w, h, d, chunk):

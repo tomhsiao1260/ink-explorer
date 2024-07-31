@@ -110,11 +110,11 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 # volume (z, y, x)
                 fit_data(cube, volume_data, (z, y, x), (zs, ys, xs))
 
-                # tiff (z, y, x), nrrd (x, y, z)
+                # tiff (z, y, x), nrrd (z, y, x)
                 filename = os.path.join(output_folder, f'{target}_volume.tif')
                 tifffile.imwrite(filename, cube.transpose(0, 1, 2))
                 filename = os.path.join(output_folder, f'{target}_volume.nrrd')
-                nrrd.write(filename, cube.transpose(2, 1, 0))
+                nrrd.write(filename, cube.transpose(0, 1, 2))
 
     # generate a mask template
     print(f"Processing mask_template_d{nrrd_chunk}.nrrd ...")

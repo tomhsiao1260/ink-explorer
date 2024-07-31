@@ -141,11 +141,12 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 # zarr (y, x, z)
                 cube[ 0:dy, 0:dx, 0:dz ] = zarr_data[ oy:oy+dy, ox:ox+dx, oz:oz+dz ]
 
-                # tiff (z, y, x), nrrd (x, y, z)
+                # tiff (z, y, x), nrrd (z, y, x)
                 filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.tif')
                 tifffile.imwrite(filename, cube.transpose(2, 0, 1))
                 filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.nrrd')
-                nrrd.write(filename, cube.transpose(1, 0, 2))
+                nrrd.write(filename, cube.transpose(2, 0, 1))
+                # nrrd.write(filename, cube.transpose(1, 0, 2))
 
     # generate a mask template
     print(f"Processing mask_template_d{nrrd_chunk}.nrrd ...")
