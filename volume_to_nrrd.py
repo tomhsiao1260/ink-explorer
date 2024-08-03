@@ -25,7 +25,6 @@ volume_chunk = 256
 cminZ, cminY, cminX = 2000, 2000, 2000
 cmaxZ, cmaxY, cmaxX = 12240, 4560, 5072
 
-output_folder = "./output_volume/"
 volume_folder = "../full-scrolls/Scroll1/PHercParis4.volpkg/seg-volumetric-labels/cubes/"
 url_template = 'https://dl.ash2txt.org/full-scrolls/Scroll1/PHercParis4.volpkg/seg-volumetric-labels/cubes/'
 
@@ -53,8 +52,8 @@ def fit_data(wData, rData, wo, ro):
 
     wData[(zs-w0):(ze-w0), (ys-w1):(ye-w1), (xs-w2):(xe-w2)] = rData[(zs-r0):(ze-r0), (ys-r1):(ye-r1), (xs-r2):(xe-r2)]
 
-def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
-    if os.path.exists(output_folder): shutil.rmtree(output_folder)
+def process_volume(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
+    # if os.path.exists(output_folder): shutil.rmtree(output_folder)
 
     os.makedirs(volume_folder, exist_ok=True)
     os.makedirs(output_folder, exist_ok=True)
@@ -104,7 +103,7 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
         for y in range(ymin, ymin + h, nrrd_chunk):
             for x in range(xmin, xmin + w, nrrd_chunk):
 
-                target = f"{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}"
+                target = f"{z:05d}_{y:05d}_{x:05d}"
                 print(f"Processing {target}_volume.nrrd ...")
 
                 # volume (z, y, x)
@@ -117,12 +116,14 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 nrrd.write(filename, cube.transpose(0, 1, 2))
 
     # generate a mask template
-    print(f"Processing mask_template_d{nrrd_chunk}.nrrd ...")
-    filename = os.path.join(output_folder, f'mask_template_d{nrrd_chunk}.nrrd')
+    print(f"Processing mask_template.nrrd ...")
+    filename = os.path.join(output_folder, f'mask_template.nrrd')
     mask = np.zeros((nrrd_chunk, nrrd_chunk, nrrd_chunk), dtype=np.uint8)
     nrrd.write(filename, mask)
 
 if __name__ == "__main__":
+    output_folder = "./output_volume/"
+
     parser = argparse.ArgumentParser(description='Download Ryan ink 3d and transform into a series of NRRD files.')
     parser.add_argument('--x', type=int, help='minimium x')
     parser.add_argument('--y', type=int, help='minimium y')
@@ -136,4 +137,4 @@ if __name__ == "__main__":
     xmin, ymin, zmin = args.x, args.y, args.z
     w, h, d, nrrd_chunk = args.w, args.h, args.d, args.chunk
 
-    main(xmin, ymin, zmin, w, h, d, nrrd_chunk)
+    process_volume(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk)

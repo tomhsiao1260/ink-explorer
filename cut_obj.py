@@ -19,10 +19,8 @@ from cut import re_index, cutLayer, cutBounding
 # python cut_obj.py 20230702185753 --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
 # python cut_obj.py 20230702185753 --x 3674 --y 1722 --z 0 --w 768 --h 1536 --d 768 --chunk 768
 
-output_folder = "./output_obj/"
-
-def main(segment, xmin, ymin, zmin, w, h, d, chunk):
-    if os.path.exists(output_folder): shutil.rmtree(output_folder)
+def process_obj(output_folder, segment, xmin, ymin, zmin, w, h, d, chunk):
+    # if os.path.exists(output_folder): shutil.rmtree(output_folder)
     os.makedirs(output_folder, exist_ok=True)
 
     # calculate the boundary
@@ -45,7 +43,7 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
         for y in range(boxMin[1], boxMax[1], chunk):
             for z in range(boxMin[2], boxMax[2], chunk):
 
-                print(f"Processing {z:05d}_{y:05d}_{x:05d}_d{chunk}_{segment}.obj ...")
+                print(f"Processing {z:05d}_{y:05d}_{x:05d}_{segment}.obj ...")
 
                 chunk_boxMin = np.array([x, y, z])
                 chunk_boxMax = chunk_boxMin + np.array([chunk, chunk, chunk])
@@ -54,10 +52,12 @@ def main(segment, xmin, ymin, zmin, w, h, d, chunk):
                 cutBounding(chunk_data, chunk_boxMin, chunk_boxMax)
                 re_index(chunk_data)
 
-                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{chunk}_{segment}.obj')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_{segment}.obj')
                 save_obj(filename, chunk_data)
 
 if __name__ == "__main__":
+    output_folder = "./output_obj/"
+
     parser = argparse.ArgumentParser(description='Cut segment into multiple chunks')
     parser.add_argument('segment', type=str, help='segment id')
     parser.add_argument('--x', type=int, help='minimium x')
@@ -73,4 +73,4 @@ if __name__ == "__main__":
     xmin, ymin, zmin = args.x, args.y, args.z
     w, h, d, chunk = args.w, args.h, args.d, args.chunk
 
-    main(segment, xmin, ymin, zmin, w, h, d, chunk)
+    process_obj(output_folder, segment, xmin, ymin, zmin, w, h, d, chunk)

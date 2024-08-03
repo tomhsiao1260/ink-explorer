@@ -36,8 +36,6 @@ from requests.auth import HTTPBasicAuth
 
 ny, nx, nz, zarr_chunk = 30, 31, 56, 256
 
-output_folder = "./output_ink/"
-ink_folder = "./output_ink/ink.zarr"
 zarr_folder = "../full-scrolls/community-uploads/ryan/3d_predictions_scroll1.zarr/"
 url_template = 'https://dl.ash2txt.org/community-uploads/ryan/3d_predictions_scroll1.zarr/'
 
@@ -52,8 +50,10 @@ def download(url, filename):
         print(f"Failed to download image {filename}, status code: {response.status_code}")
         return False
 
-def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
-    if os.path.exists(output_folder): shutil.rmtree(output_folder)
+def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
+    # if os.path.exists(output_folder): shutil.rmtree(output_folder)
+
+    ink_folder = f"./{output_folder}/ink.zarr"
 
     os.makedirs(ink_folder, exist_ok=True)
     os.makedirs(zarr_folder, exist_ok=True)
@@ -128,7 +128,7 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
         for y in range(ys, ye, nrrd_chunk):
             for x in range(xs, xe, nrrd_chunk):
-                print(f"Processing {z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.nrrd ...")
+                print(f"Processing {z:05d}_{y:05d}_{x:05d}_ink.nrrd ...")
 
                 dy = min(ye - y, nrrd_chunk)
                 dx = min(xe - x, nrrd_chunk)
@@ -142,19 +142,21 @@ def main(xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 cube[ 0:dy, 0:dx, 0:dz ] = zarr_data[ oy:oy+dy, ox:ox+dx, oz:oz+dz ]
 
                 # tiff (z, y, x), nrrd (z, y, x)
-                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.tif')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_ink.tif')
                 tifffile.imwrite(filename, cube.transpose(2, 0, 1))
-                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_d{nrrd_chunk}_ink.nrrd')
+                filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_ink.nrrd')
                 nrrd.write(filename, cube.transpose(2, 0, 1))
                 # nrrd.write(filename, cube.transpose(1, 0, 2))
 
     # generate a mask template
-    print(f"Processing mask_template_d{nrrd_chunk}.nrrd ...")
-    filename = os.path.join(output_folder, f'mask_template_d{nrrd_chunk}.nrrd')
+    print(f"Processing mask_template.nrrd ...")
+    filename = os.path.join(output_folder, f'mask_template.nrrd')
     mask = np.zeros((nrrd_chunk, nrrd_chunk, nrrd_chunk), dtype=np.uint8)
     nrrd.write(filename, mask)
 
 if __name__ == "__main__":
+    output_folder = "./output_ink/"
+
     parser = argparse.ArgumentParser(description='Download Ryan ink 3d and transform into a series of NRRD files.')
     parser.add_argument('--x', type=int, help='minimium x')
     parser.add_argument('--y', type=int, help='minimium y')
@@ -168,7 +170,7 @@ if __name__ == "__main__":
     xmin, ymin, zmin = args.x, args.y, args.z
     w, h, d, nrrd_chunk = args.w, args.h, args.d, args.chunk
 
-    main(xmin, ymin, zmin, w, h, d, nrrd_chunk)
+    process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk)
 
 
 
