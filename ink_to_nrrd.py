@@ -24,11 +24,11 @@ from requests.auth import HTTPBasicAuth
 # python ink_to_nrrd.py --x 3360 --y 2666 --z 6585 --w 768 --h 1536 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 3360 --y 2373 --z 5817 --w 768 --h 1536 --d 768 --chunk 768
 
-# python ink_to_nrrd.py --x 2612 --y 1765 --z 5049 --w 2304 --h 1536 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2612 --y 1765 --z 4281 --w 2304 --h 1536 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2645 --y 1831 --z 2736 --w 2304 --h 768 --d 768 --chunk 768
-# python ink_to_nrrd.py --x 2656 --y 1860 --z 1968 --w 2304 --h 768 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3380 --y 1765 --z 5049 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3380 --y 1765 --z 4281 --w 768 --h 1536 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3400 --y 1900 --z 3513 --w 768 --h 768 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3413 --y 1831 --z 2736 --w 768 --h 768 --d 768 --chunk 768
+# python ink_to_nrrd.py --x 3424 --y 1860 --z 1968 --w 768 --h 768 --d 768 --chunk 768
 
 # python ink_to_nrrd.py --x 3490 --y 1537 --z 1200 --w 768 --h 1536 --d 768 --chunk 768
 # python ink_to_nrrd.py --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
@@ -53,9 +53,6 @@ def download(url, filename):
 def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
     # if os.path.exists(output_folder): shutil.rmtree(output_folder)
 
-    ink_folder = f"./{output_folder}/ink.zarr"
-
-    os.makedirs(ink_folder, exist_ok=True)
     os.makedirs(zarr_folder, exist_ok=True)
     os.makedirs(output_folder, exist_ok=True)
 
@@ -96,31 +93,8 @@ def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
                     download(url, filename)
     print('')
 
-    # change .zarray shape
-    with open(zarray_name, 'r') as file:
-        data = json.load(file)
-
-        cy = data['chunks'][0]
-        cx = data['chunks'][1]
-        cz = data['chunks'][2]
-
-        data['shape'][0] = cy * (nye - nys + 1)
-        data['shape'][1] = cx * (nxe - nxs + 1)
-        data['shape'][2] = cz * (nze - nzs + 1)
-
-    # copy & rename zarr files
-    with open(os.path.join(ink_folder, '.zarray'), 'w') as file:
-        json.dump(data, file, indent=4)
-
-    for iy in range(nys, nye + 1, 1):
-        for ix in range(nxs, nxe + 1, 1):
-            for iz in range(nzs, nze + 1, 1):
-                filename = os.path.join(zarr_folder, f'{iy}.{ix}.{iz}')
-                shutil.copy2(filename, os.path.join(ink_folder, f'{iy - nys}.{ix - nxs}.{iz - nzs}'))
-
     # load zarr
-    zarr_data = zarr.open(ink_folder, mode="r")
-    zarr_data = np.array(zarr_data)
+    zarr_data = zarr.open(zarr_folder, mode="r")
 
     # save it as a series of tif & nrrd
     for z in range(zs, ze, nrrd_chunk):
@@ -134,12 +108,8 @@ def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
                 dx = min(xe - x, nrrd_chunk)
                 dz = min(ze - z, nrrd_chunk)
 
-                oy = y - ys + ys % zarr_chunk
-                ox = x - xs + xs % zarr_chunk
-                oz = z - zs + zs % zarr_chunk
-
                 # zarr (y, x, z)
-                cube[ 0:dy, 0:dx, 0:dz ] = zarr_data[ oy:oy+dy, ox:ox+dx, oz:oz+dz ]
+                cube[ 0:dy, 0:dx, 0:dz ] = np.array(zarr_data[ y:y+dy, x:x+dx, z:z+dz ])
 
                 # tiff (z, y, x), nrrd (z, y, x)
                 filename = os.path.join(output_folder, f'{z:05d}_{y:05d}_{x:05d}_ink.tif')
@@ -150,7 +120,7 @@ def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
     # generate a mask template
     print(f"Processing mask_template.nrrd ...")
-    filename = os.path.join(output_folder, f'mask_template.nrrd')
+    filename = os.path.join(output_folder, 'mask_template.nrrd')
     mask = np.zeros((nrrd_chunk, nrrd_chunk, nrrd_chunk), dtype=np.uint8)
     nrrd.write(filename, mask)
 

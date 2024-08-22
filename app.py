@@ -5,11 +5,32 @@ from cut_obj import process_obj
 from ink_to_nrrd import process_ink
 from volume_to_nrrd import process_volume
 
-# python app.py --segment 20230702185753 --x 2630 --y 1900 --z 3513 --w 2304 --h 768 --d 768 --chunk 768
+# PI
+
+# python app.py --segment 20230702185753 --x 2432 --y 2304 --z 10624 --w 768 --h 768 --d 768 --chunk 768
+
+# Title
+
+# python app.py --segment 20230702185753 --x 2860 --y 2853 --z 9657 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 2973 --y 2769 --z 8889 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3140 --y 2700 --z 8121 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3264 --y 2666 --z 7353 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3360 --y 2666 --z 6585 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3360 --y 2373 --z 5817 --w 768 --h 1536 --d 768 --chunk 768
+
+# python app.py --segment 20230702185753 --x 3380 --y 1765 --z 5049 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3380 --y 1765 --z 4281 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3400 --y 1900 --z 3513 --w 768 --h 768 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3413 --y 1831 --z 2736 --w 768 --h 768 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3424 --y 1860 --z 1968 --w 768 --h 768 --d 768 --chunk 768
+
+# python app.py --segment 20230702185753 --x 3490 --y 1537 --z 1200 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
+# python app.py --segment 20230702185753 --x 3674 --y 1722 --z 0 --w 768 --h 1536 --d 768 --chunk 768
 
 def main(output_folder, segment, xmin, ymin, zmin, w, h, d, chunk):
     info = {}
-    info['mask'] = f'mask_template_d768.nrrd'
+    info['mask'] = f'mask_template.nrrd'
     info['volume'] = [f'{zmin:05d}_{ymin:05d}_{xmin:05d}_ink.nrrd']
     info['segments'] = []
     info['z'] = zmin
@@ -55,6 +76,6 @@ if __name__ == "__main__":
             for x in range(xmin, xmin + w, chunk):
 
                 w, h, d = chunk, chunk, chunk
-                output_folder = f"./cubes/{x}_{y}_{z}/"
+                output_folder = f"./cubes/{z:05}_{y:05}_{x:05}/"
 
                 main(output_folder, segment, x, y, z, w, h, d, chunk)
