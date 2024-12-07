@@ -37,8 +37,13 @@ from concurrent.futures import ThreadPoolExecutor
 
 nz, ny, nx, zarr_chunk = 100, 100, 100, 128
 
-zarr_folder = "/Users/yao/Desktop/full-scrolls/volumes_zarr_standardized/54keV_7.91um_Scroll1A.zarr/"
-url_template = 'https://dl.ash2txt.org/full-scrolls/Scroll1/PHercParis4.volpkg/volumes_zarr_standardized/54keV_7.91um_Scroll1A.zarr/0/'
+# original
+zarr_folder = "/Users/yao/Desktop/full-scrolls/Scroll1_8um.zarr/"
+url_template = 'https://dl.ash2txt.org/community-uploads/james/Scroll1/Scroll1_8um.zarr/0/'
+
+# color contrast
+# zarr_folder = "/Users/yao/Desktop/full-scrolls/volumes_zarr_standardized/54keV_7.91um_Scroll1A.zarr/"
+# url_template = 'https://dl.ash2txt.org/full-scrolls/Scroll1/PHercParis4.volpkg/volumes_zarr_standardized/54keV_7.91um_Scroll1A.zarr/0/'
 
 def download(url, filename):
     print(f"Download {os.path.basename(filename)} ...")
@@ -125,10 +130,9 @@ def process_ink(output_folder, xmin, ymin, zmin, w, h, d, nrrd_chunk):
 
                 # zarr (z, y, x)
                 data = np.array(zarr_data[ z:z+dz, y:y+dy, x:x+dx ])
-                print(np.max(data))
-                rescale = 255 // np.max(data)
+                if (data.dtype == 'uint16'): data = (data // 256).astype(np.uint8)
 
-                cube[ 0:dz, 0:dy, 0:dx ] = data * rescale
+                cube[ 0:dz, 0:dy, 0:dx ] = data
 
                 unique_values = np.unique(cube)
 
