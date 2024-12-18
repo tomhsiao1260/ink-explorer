@@ -37,7 +37,7 @@ top_max = np.max(obj_top['vertices'], axis=0)
 # print(top_max)
 
 chunk = 768
-z_min = 9657
+z_min = 1968 - chunk
 
 data = parse_obj('./obj_path/20230702185753.obj')
 cut_obj(data, splitAxis=2, splitOffset=z_min, survive='right', align=True)

@@ -31,7 +31,7 @@ from concurrent.futures import ThreadPoolExecutor
 # python volume_to_nrrd.py --x 3413 --y 1831 --z 2736 --w 768 --h 768 --d 768 --chunk 768
 # python volume_to_nrrd.py --x 3424 --y 1860 --z 1968 --w 768 --h 768 --d 768 --chunk 768
 
-# python volume_to_nrrd.py --x 3490 --y 1537 --z 1200 --w 768 --h 1536 --d 768 --chunk 768
+# python volume_to_nrrd.py --x 3490 --y 1537 --z 1200 --w 768 --h 1536 --d 768 --chunk 768 # casey pi
 # python volume_to_nrrd.py --x 3574 --y 1693 --z 432 --w 768 --h 1536 --d 768 --chunk 768
 # python volume_to_nrrd.py --x 3674 --y 1722 --z 0 --w 768 --h 1536 --d 768 --chunk 768
 

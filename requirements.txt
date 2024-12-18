@@ -2,3 +2,4 @@ zarr
 pynrrd
 tifffile
 scikit-image
+opencv-python
